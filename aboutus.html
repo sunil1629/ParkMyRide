@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ParkMyRide - About & Support</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #0f172a;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    h1, h2 {
+        color: #a78bfa;
+    }
+
+    .section {
+        background: rgba(255,255,255,0.05);
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+    }
+
+    ul {
+        padding-left: 20px;
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 12px;
+        border-radius: 5px;
+        border: none;
+        margin-top: 5px;
+    }
+
+    textarea {
+        height: 120px;
+        resize: none;
+    }
+
+    button {
+        padding: 12px;
+        background: #7c3aed;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    button:hover {
+        background: #5b21b6;
+    }
+
+    /* Popup */
+    #popup {
+        display: none;
+        position: fixed;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #1e293b;
+        padding: 20px 30px;
+        border-radius: 8px;
+        text-align: center;
+        border: 1px solid #7c3aed;
+        box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+
+    /* Star Rating */
+    .stars {
+        display: flex;
+        gap: 10px;
+        font-size: 32px;
+        cursor: pointer;
+        margin: 10px 0;
+        color: #555;
+        user-select: none;
+    }
+
+    .stars .star.active {
+        color: gold;
+        text-shadow: 0 0 10px yellow;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- ABOUT US SECTION -->
+    <div class="section">
+        <h1>About ParkMyRide</h1>
+        <p>
+            <strong>ParkMyRide</strong> is your smart parking solution, designed to make finding and booking parking slots fast, easy, and stress-free. 
+            Whether you are commuting to work, visiting a mall, or attending an event, our platform helps you reserve your spot in advance.
+        </p>
+
+        <h2>Features</h2>
+        <ul>
+            <li>Check available parking slots in real-time</li>
+            <li>Book slots online and save time</li>
+            <li>payment at the time of unpark</li>
+            <li>Can see your parking details after unpark</li>
+            <li>Responsive design for mobile and desktop</li>
+        </ul>
+    </div>
+
+   
+    <div class="section">
+        <h1>Customer Support</h1>
+        <p>Need help? Our support team is here to assist you with any queries or feedback.</p>
+
+        <h2>Send us a message</h2>
+        <form id="supportForm">
+            <input type="text" id="name" placeholder="Your Name" required>
+            <input type="email" id="email" placeholder="Your Email" required>
+            <input type="text" id="subject" placeholder="Subject" required>
+            <textarea id="message" placeholder="Write your message..." required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+
+        <h2>Rate Your Experience</h2>
+        <div class="stars" id="starRating">
+            <span class="star" data-rate="1">★</span>
+            <span class="star" data-rate="2">★</span>
+            <span class="star" data-rate="3">★</span>
+            <span class="star" data-rate="4">★</span>
+            <span class="star" data-rate="5">★</span>
+        </div>
+        <p id="ratingResult"></p>
+        <button id="submitRating" style="display:none;">Submit Feedback</button>
+        <p id="ratingMessage" style="margin-top:10px;"></p>
+    </div>
+</div>
+
+
+<div id="popup">
+    <h3>Your message has been sent successfully 🎉</h3>
+    <p>Our support team will contact you soon.</p>
+    <button onclick="closePopup()">OK</button>
+</div>
+
+<script>
+    
+    document.getElementById("supportForm").onsubmit = function(event) {
+        event.preventDefault(); 
+        document.getElementById("popup").style.display = "block";
+        event.target.reset(); 
+    };
+
+    function closePopup() {
+        document.getElementById("popup").style.display = "none";
+    }
+
+    // STAR RATING SYSTEM
+    const stars = document.querySelectorAll(".star");
+    const ratingText = document.getElementById("ratingResult");
+    const submitBtn = document.getElementById("submitRating");
+    const ratingMsg = document.getElementById("ratingMessage");
+
+    let selectedRating = 0;
+
+    stars.forEach(star => {
+        star.addEventListener("click", () => {
+            selectedRating = star.dataset.rate;
+            stars.forEach(s => {
+                s.classList.toggle("active", s.dataset.rate <= selectedRating);
+            });
+            ratingText.innerHTML =`You selected <strong>${selectedRating} / 5</strong> ⭐`;
+            submitBtn.style.display = "block";
+        });
+    });
+
+    submitBtn.onclick = function () {
+        if (selectedRating > 0) {
+            ratingMsg.innerHTML = `Thank you! You rated us <strong>${selectedRating} stars</strong>`;
+            submitBtn.style.display = "none";
+        }
+    };
+</script>
+
+</body>
+</html>
